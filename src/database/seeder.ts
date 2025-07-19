@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Role } from '../role/entities/role.entity';
 import { Permission } from '../permission/entities/permission.entity';
+import { User } from '../user/entities/user.entity'; // ✅ Add this
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -9,13 +10,14 @@ const AppDataSource = new DataSource({
   username: 'postgres',
   password: 'softsuave',
   database: 'rbms_db',
-  entities: [Role, Permission],
+  entities: [Role, Permission, User], // ✅ Add User here
   synchronize: false,
 });
 
+
 async function seed() {
   await AppDataSource.initialize();
-
+  console.log('Loaded Entities:', AppDataSource.entityMetadatas.map(e => e.name));  
   const roleRepo = AppDataSource.getRepository(Role);
   const permissionRepo = AppDataSource.getRepository(Permission);
 
